@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaidyakovLanguage", "SaidyakovLanguage\SaidyakovLanguage.csproj", "{6538BD66-150C-43DF-826B-25365C9FCD47}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6538BD66-150C-43DF-826B-25365C9FCD47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6538BD66-150C-43DF-826B-25365C9FCD47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6538BD66-150C-43DF-826B-25365C9FCD47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6538BD66-150C-43DF-826B-25365C9FCD47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5AD7AC3E-7D98-401D-8380-9871F16E27AB}
+	EndGlobalSection
+EndGlobal
