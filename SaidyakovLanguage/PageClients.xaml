@@ -9,10 +9,9 @@
       Title="PageClients" FontFamily="Comic Sans MS">
 
     <Grid>
-        <ListView Name="ClientListView">
+        <ListView Name="ClientListView" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -55,11 +54,7 @@
                             <TextBlock Text="{Binding LastVisitText}"></TextBlock>
                             <TextBlock Text="{Binding VisitCountText}"></TextBlock>
                         </WrapPanel>
-
                     </Grid>
-
-
-
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
