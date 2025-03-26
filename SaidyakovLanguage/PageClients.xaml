@@ -9,7 +9,13 @@
       Title="PageClients" FontFamily="Comic Sans MS">
 
     <Grid>
-        <ListView Name="ClientListView">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <ListView Name="listViewClients" Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -58,5 +64,24 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Name="textBlockCountRecords" FontSize="20" Height="20"/>
+            <TextBlock Name="textBlockCountAllRecords" FontSize="20" Height="20"/>
+            
+            <Button Name="btnLeftDir" Content="&lt;" Width="20" Height="20"
+                    Click="btnLeftDir_Click"></Button>
+            
+            <ListBox FontSize="20" Name="listBoxPages" MouseUp="listBoxPages_MouseUp">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            
+            <Button Name="btnRightDir" Content="&gt;" Width="20" Height="20"
+                    Click="btnRightDir_Click"></Button>
+        </StackPanel>
     </Grid>
 </Page>
