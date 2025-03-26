@@ -9,7 +9,7 @@
       Title="PageClients" FontFamily="Comic Sans MS">
 
     <Grid>
-        <ListView Name="ClientListView" d:ItemsSource="{d:SampleData ItemCount=5}">
+        <ListView Name="ClientListView">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
