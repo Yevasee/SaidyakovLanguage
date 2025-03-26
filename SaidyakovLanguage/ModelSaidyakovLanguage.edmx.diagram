@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="50e9dbe5dd5b4ec683e1fdf3c7f35fc8" Name="Diagram1">
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.Client" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.ClientService" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.DocumentByService" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.Gender" Width="1.5" PointX="1.5" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.Manufacturer" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.Product" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.ProductPhoto" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.ProductSale" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.Service" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.ServicePhoto" Width="1.5" PointX="3" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.sysdiagrams" Width="1.5" PointX="5.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelSaidyakovLanguage.Tag" Width="1.5" PointX="3" PointY="16.25" IsExpanded="true" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_Client_Gender" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_ClientService_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_ClientService_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_DocumentByService_ClientService" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_ProductSale_ClientService" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_Product_Manufacturer" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_ProductPhoto_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_ProductSale_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.FK_ServicePhoto_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.AttachedProduct" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelSaidyakovLanguage.TagOfClient" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

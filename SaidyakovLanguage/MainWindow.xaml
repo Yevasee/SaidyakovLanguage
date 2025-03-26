@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SaidyakovLanguage"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Saidyakov Language" Height="450" Width="800"
+        Icon="/defaultImages/school_logo.ico" FontFamily="Comic Sans MS" Background="#FFE7FABF">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Image Source="/defaultImages/school_logo.png" HorizontalAlignment="Left"></Image>
+        <TextBlock Text="Language" HorizontalAlignment="Center" FontSize="24" VerticalAlignment="Center"></TextBlock>
+
+        <Button Name="BtnBack" Content="Назад" Click="BtnBack_Click" Background="#FF04A0FF" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+        <Frame Name="MainFrame" NavigationUIVisibility="Hidden" ContentRendered="MainFrame_ContentRendered" Grid.Row="1"></Frame>
+
     </Grid>
 </Window>
