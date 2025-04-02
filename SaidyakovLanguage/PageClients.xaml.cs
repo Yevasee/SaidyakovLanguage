@@ -20,105 +20,160 @@ namespace SaidyakovLanguage
     /// </summary>
     public partial class PageClients : Page
     {
-        int countRecordsOfClients;
-        int countOfPages;
-        int currentPage = 0;
         List<Client> listClientsForPage = new List<Client>();
-        List<Client> listCurrentClients;
         public PageClients()
         {
             InitializeComponent();
 
+            listClientsForPage = SaidyakovLanguageEntities.GetContext().Client.ToList();
+            listViewClients.ItemsSource = listClientsForPage;
+
+            comboBoxGender.SelectedIndex = 0;
+            comboBoxSort.SelectedIndex = 0;
+
+            comboBoxLimitCountOfRecordsForPage.SelectedIndex = 0;
+            listBoxPages.SelectedIndex = 0;
+
+            UpdateListView();
+        }
+
+        private int GetLimitCountOfRecordsForPage()
+        {
+            int currentCountOfClients = listClientsForPage.Count();
+            int limitCountOfRecordsForPage = currentCountOfClients;
+
+            switch (comboBoxLimitCountOfRecordsForPage.SelectedIndex)
+            {
+                case 0: limitCountOfRecordsForPage = 10; break;
+                case 1: limitCountOfRecordsForPage = 50; break;
+                case 2: limitCountOfRecordsForPage = 200; break;
+            }
+
+
+            if (listBoxPages.Items.Count == (listBoxPages.SelectedIndex+1) && currentCountOfClients % limitCountOfRecordsForPage > 0)
+            {
+                limitCountOfRecordsForPage = currentCountOfClients % limitCountOfRecordsForPage;
+            }
+
+            if (limitCountOfRecordsForPage > currentCountOfClients)
+            {
+                limitCountOfRecordsForPage = currentCountOfClients;
+            }
+
+            return limitCountOfRecordsForPage;
+        }
+        
+        private void UpdateListView()
+        {
+            int selectedPage = listBoxPages.SelectedIndex;
+            int limitCountOfRecordsForPage = GetLimitCountOfRecordsForPage();
+            var currentCountOfClients = listClientsForPage.Count();
+
+            var listClientsForPageOnLimit = listClientsForPage.
+                GetRange(limitCountOfRecordsForPage * selectedPage,
+                limitCountOfRecordsForPage);
+            listViewClients.ItemsSource = listClientsForPageOnLimit;
+            textBlockCountOfPages.Text = currentCountOfClients.ToString() + " из " + SaidyakovLanguageEntities.GetContext().Client.Count().ToString();
+        }
+
+        private void UpdateListBoxPages()
+        {
+            int currentCountOfClients = listClientsForPage.Count();
+
+            int limitCountOfRecordsForPage = GetLimitCountOfRecordsForPage();
+
+            int countOfPages = currentCountOfClients / limitCountOfRecordsForPage;
+            if (currentCountOfClients % limitCountOfRecordsForPage > 0)
+            {
+                ++countOfPages;
+            }
+            listBoxPages.Items.Clear();
+            for (int i = 1; i <= countOfPages; ++i) { 
+                listBoxPages.Items.Add(i);
+            }
+            listBoxPages.SelectedIndex = 0;
+        }
+
+        public void UpdateClients()
+        {
+            listClientsForPage = SaidyakovLanguageEntities.GetContext().Client.ToList();
+
+            switch (comboBoxGender.SelectedIndex)
+            {
+                case 1: listClientsForPage = listClientsForPage.Where(cl => cl.Gender.Code.Equals("2")).ToList(); break;
+                case 2: listClientsForPage = listClientsForPage.Where(cl => cl.Gender.Code.Equals("1")).ToList(); break;
+            }
+
+            switch (comboBoxSort.SelectedIndex)
+            {
+                case 1: listClientsForPage = listClientsForPage.OrderBy(cl => cl.FirstName).ToList(); break;
+                case 2: listClientsForPage = listClientsForPage.OrderByDescending(cl => cl.StartTimeDT).ToList(); break;
+                case 3: listClientsForPage = listClientsForPage.OrderByDescending(cl => cl.VisitCount).ToList(); break;
+            }
+
+            listClientsForPage = listClientsForPage.Where(cl => cl.FIO.ToLower().Contains(textBoxSearch.Text.ToLower()) ||
+                                            cl.Email.ToLower().Contains(textBoxSearch.Text.ToLower()) ||
+                                            cl.Phone.Replace("-", "").Replace("(", "").Replace(")", "").Contains(textBoxSearch.Text.ToLower())).ToList();
+            
+            listViewClients.ItemsSource = listClientsForPage;
+
+            UpdateListBoxPages();
+            UpdateListView();
+        }
+
+        private void PageList_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            UpdateListView();
+        }
+
+        private void PageCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateListBoxPages();
+            UpdateListView();
+        }
+
+        private void LeftButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBoxPages.SelectedIndex > 0)
+                listBoxPages.SelectedIndex--;
+            UpdateListView();
+        }
+
+        private void RightButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (listBoxPages.SelectedIndex < listBoxPages.Items.Count - 1)
+                listBoxPages.SelectedIndex++;
+            UpdateListView();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var CurrentClient = (sender as Button).DataContext as Client;
+            if (CurrentClient.VisitCount != 0) MessageBox.Show("Невозможно удалить этого клиента!");
+            else
+            {
+                if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    SaidyakovLanguageEntities.GetContext().Client.Remove(CurrentClient);
+                    SaidyakovLanguageEntities.GetContext().SaveChanges();
+                    UpdateListView();
+                }
+            }
+        }
+
+        private void SearchTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
             UpdateClients();
         }
 
-        private void UpdateClients()
+        private void SortCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var listClients = SaidyakovLanguageEntities.GetContext().Client.ToList();
-
-            listViewClients.ItemsSource = listClients;
-            listCurrentClients = listClients;
-            
-            ChangePage(0, 0);
-        }
-        private void ChangePage(int direction, int? selectedPage)
-        {
-            listClientsForPage.Clear();
-            countRecordsOfClients = listCurrentClients.Count;
-
-            countOfPages = countRecordsOfClients / 10;
-            if (countRecordsOfClients % 10 > 0)
-            {
-                countOfPages += 1;
-            }
-
-            Boolean isUpdate = false;
-
-            if (selectedPage.HasValue)
-            {
-                if (selectedPage >= 0 && selectedPage <= countOfPages)
-                {
-                    currentPage = (int)selectedPage;
-                }
-                isUpdate = true;
-            }
-            else
-            {
-                switch (direction)
-                {
-                    case 1:
-                        if (currentPage > 0)
-                        {
-                            currentPage--;
-                            isUpdate = true;
-                        }
-                        break;
-                    case 2:
-                        if (currentPage < countOfPages - 1)
-                        {
-                            currentPage++;
-                            isUpdate = true;
-                        }
-                        break;
-                }
-            }
-
-            int countRecordsOnPage = currentPage * 10 + 10 < countRecordsOfClients ? currentPage * 10 + 10 : countRecordsOfClients;
-            for (int i = currentPage * 10; i < countRecordsOnPage; i++)
-            {
-                listClientsForPage.Add(listCurrentClients[i]);
-            }
-
-            if (isUpdate)
-            {
-                listBoxPages.Items.Clear();
-
-                for (int i = 1; i <= countOfPages; i++)
-                {
-                    listBoxPages.Items.Add(i);
-                }
-
-                listBoxPages.SelectedIndex = currentPage;
-                textBlockCountRecords.Text = countRecordsOnPage.ToString();
-                textBlockCountAllRecords.Text = " из " + countRecordsOfClients.ToString();
-                listViewClients.ItemsSource = listClientsForPage;
-
-                listViewClients.Items.Refresh();
-            }
-        }
-        private void btnLeftDir_Click(object sender, RoutedEventArgs e)
-        {
-            ChangePage(1, null);
+            UpdateClients();
         }
 
-        private void listBoxPages_MouseUp(object sender, MouseButtonEventArgs e)
+        private void GenderCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ChangePage(0, Convert.ToInt32(listBoxPages.SelectedItem.ToString()) - 1);
-        }
-
-        private void btnRightDir_Click(object sender, RoutedEventArgs e)
-        {
-            ChangePage(2, null);
+            UpdateClients();
         }
     }
 }

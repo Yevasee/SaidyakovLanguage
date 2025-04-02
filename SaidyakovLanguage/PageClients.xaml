@@ -14,26 +14,44 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Height="50" HorizontalAlignment="Center">
+            <TextBlock Text="Поиск: " Margin="5" VerticalAlignment="Center"/>
+            <TextBox Name="textBoxSearch" Width="200" Margin="5" VerticalAlignment="Center" TextChanged="SearchTB_TextChanged"/>
+
+            <TextBlock Text="Пол: " Margin="5" VerticalAlignment="Center"/>
+            <ComboBox Name="comboBoxGender" Width="200" Margin="5" VerticalAlignment="Center" SelectionChanged="GenderCB_SelectionChanged">
+                <ComboBoxItem Content="Все"/>
+                <ComboBoxItem Content="Мужской"/>
+                <ComboBoxItem Content="Женский"/>
+            </ComboBox>
+
+            <TextBlock Text="Сортировка: " Margin="5" VerticalAlignment="Center"/>
+            <ComboBox Name="comboBoxSort" Width="200" Margin="5" VerticalAlignment="Center" SelectionChanged="SortCB_SelectionChanged">
+                <ComboBoxItem Content="Без сортировки"/>
+                <ComboBoxItem Content="По фамилии"/>
+                <ComboBoxItem Content="По дате последнего посещения"/>
+                <ComboBoxItem Content="По количеству посещений"/>
+            </ComboBox>
+        </StackPanel>
+
         <ListView Name="listViewClients" Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="800"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-
                         <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-
-
-                        <Image Grid.RowSpan="4" Stretch="UniformToFill">
+                        
+                        <Image Width="150" Grid.RowSpan="5" Grid.Column="0" HorizontalAlignment="Center">
                             <Image.Source>
                                 <Binding Path="PhotoPath">
                                     <Binding.TargetNullValue>
@@ -45,43 +63,54 @@
                             </Image.Source>
                         </Image>
 
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding FullNameAndID, StringFormat=ID: {0}}"></TextBlock>
-                        <WrapPanel Grid.Column="1" Grid.Row="1">
-                            <TextBlock Text="{Binding Gender.Name, StringFormat=Пол: {0}}"></TextBlock>
-                            <TextBlock Text="{Binding BirthdayText}"></TextBlock>
-                        </WrapPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                            <TextBlock Text="{Binding ID, StringFormat=ID: {0}}"  FontSize="20"></TextBlock>
+                            <TextBlock Text="{Binding FIO, StringFormat={} {0}}" FontSize="20"></TextBlock>
+                        </StackPanel>
 
-                        <WrapPanel Grid.Column="1" Grid.Row="2">
-                            <TextBlock Text="{Binding Phone, StringFormat=Телефон: {0}}"></TextBlock>
-                            <TextBlock Text="{Binding Email, StringFormat=e-mail: {0}}"></TextBlock>
-                        </WrapPanel>
-                        <TextBlock Grid.Column="1" Text="{Binding RegistrationDateText}" Grid.Row="3"></TextBlock>
-                        <WrapPanel Grid.Column="1" Grid.Row="4">
-                            <TextBlock Text="{Binding LastVisitText}"></TextBlock>
-                            <TextBlock Text="{Binding VisitCountText}"></TextBlock>
-                        </WrapPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                            <TextBlock Text="{Binding GenderName, StringFormat=Пол: {0}}"  FontSize="20"></TextBlock>
+                            <TextBlock Text="{Binding BirthdayText, StringFormat={} Дата рождения {0}}" FontSize="20"></TextBlock>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                            <TextBlock Text="{Binding Phone, StringFormat=Телефон: {0}}"  FontSize="20"></TextBlock>
+                            <TextBlock Text="{Binding Email, StringFormat={} e-mail: {0}}" FontSize="20"></TextBlock>
+                        </StackPanel>
+                        
+                        <Button Name="buttonDeleteClient" Click="DeleteButton_Click" Content="Удалить" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"/>
+                        <TextBlock Text="{Binding RegistrationDateText, StringFormat=Дата регистрации: {0}}" Grid.Column="1" Grid.Row="3" FontSize="20"></TextBlock>
+
+                        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                            <TextBlock Text="{Binding StartTime, StringFormat=Дата последнего посещения: {0}}"  FontSize="20"></TextBlock>
+                            <TextBlock Text="{Binding VisitCount, StringFormat={} Кол-во посещений: {0}}" FontSize="20"></TextBlock>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <TextBlock Name="textBlockCountRecords" FontSize="20" Height="20"/>
-            <TextBlock Name="textBlockCountAllRecords" FontSize="20" Height="20"/>
+
+        <StackPanel Grid.Row="2" Height="50" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Name="textBlockCountOfPages" Text="N из M" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right"/>
             
-            <Button Name="btnLeftDir" Content="&lt;" Width="20" Height="20"
-                    Click="btnLeftDir_Click"></Button>
+            <TextBlock Text="Выводить по: " Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <ComboBox Name="comboBoxLimitCountOfRecordsForPage" Width="100" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right" SelectionChanged="PageCB_SelectionChanged">
+                <ComboBoxItem Content="10"/>
+                <ComboBoxItem Content="50"/>
+                <ComboBoxItem Content="200"/>
+                <ComboBoxItem Content="Все"/>
+            </ComboBox>
             
-            <ListBox FontSize="20" Name="listBoxPages" MouseUp="listBoxPages_MouseUp">
+            <Button Name="buttonScrollToLeftOn1Page" Width="15" Click="LeftButton_Click" Content="&lt;"/>
+            <ListBox Name="listBoxPages" MouseUp="PageList_MouseUp" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-            
-            <Button Name="btnRightDir" Content="&gt;" Width="20" Height="20"
-                    Click="btnRightDir_Click"></Button>
+            <Button Name="buttonScrollToRightOn1Page" Width="15" Click="RightButton_Click" Content="&gt;"/>
         </StackPanel>
+        
     </Grid>
 </Page>

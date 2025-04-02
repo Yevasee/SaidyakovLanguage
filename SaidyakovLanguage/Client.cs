@@ -21,21 +21,27 @@ namespace SaidyakovLanguage
             this.ClientService = new HashSet<ClientService>();
             this.Tag = new HashSet<Tag>();
         }
-        public string FullNameAndID
+        public string FIO
         {
             get
             {
-                return this.ID + " " + this.LastName + " " + this.FirstName + " " + this.Patronymic;
+                return this.FirstName + " " + this.LastName + " " + this.Patronymic;
             }
         }
 
+        public string GenderName
+        {
+            get
+            {
+                if (GenderCode == "2") return "Мужской";
+                return "Женский";
+            }
+        }
         public string BirthdayText
         {
             get
             {
-
-
-                return " " + "Дата Рождения: " + this.Birthday.ToShortDateString();
+                return this.Birthday.ToShortDateString();
             }
         }
 
@@ -43,7 +49,7 @@ namespace SaidyakovLanguage
         {
             get
             {
-                return " " + "Дата регистрации: " + this.RegistrationDate.ToShortDateString();
+                return this.RegistrationDate.ToShortDateString();
             }
         }
 
@@ -54,12 +60,11 @@ namespace SaidyakovLanguage
                 return this.ClientService.Max(p => p.StartTime).ToShortDateString();
             }
         }
+        
         public string LastVisitText
         {
             get
             {
-
-
                 if (VisitCount == 0)
                 {
                     return "Дата последнего посещения: " + "нет ";
@@ -84,6 +89,29 @@ namespace SaidyakovLanguage
                 return "Кол-во посещений: " + VisitCount;
             }
         }
+        public DateTime StartTimeDT
+        {
+            get
+            {
+
+                if (VisitCount == 0) {
+                    return DateTime.MinValue; 
+                }
+                return ClientService.Max(x => x.StartTime);
+            }
+        }
+
+        public string StartTime
+        {
+            get
+            {
+                if (VisitCount == 0) {
+                    return "Нет"; 
+                }
+                return ClientService.Max(x => x.StartTime).ToShortDateString();
+            }
+        }
+        
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
