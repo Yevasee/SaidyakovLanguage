@@ -34,7 +34,7 @@ namespace SaidyakovLanguage
             comboBoxLimitCountOfRecordsForPage.SelectedIndex = 0;
             listBoxPages.SelectedIndex = 0;
 
-            UpdateListView();
+            UpdateClients();
         }
 
         private int GetLimitCountOfRecordsForPage()
@@ -49,12 +49,6 @@ namespace SaidyakovLanguage
                 case 2: limitCountOfRecordsForPage = 200; break;
             }
 
-
-            if (listBoxPages.Items.Count == (listBoxPages.SelectedIndex+1) && currentCountOfClients % limitCountOfRecordsForPage > 0)
-            {
-                limitCountOfRecordsForPage = currentCountOfClients % limitCountOfRecordsForPage;
-            }
-
             if (limitCountOfRecordsForPage > currentCountOfClients)
             {
                 limitCountOfRecordsForPage = currentCountOfClients;
@@ -66,11 +60,17 @@ namespace SaidyakovLanguage
         private void UpdateListView()
         {
             int selectedPage = listBoxPages.SelectedIndex;
-            int limitCountOfRecordsForPage = GetLimitCountOfRecordsForPage();
             var currentCountOfClients = listClientsForPage.Count();
+            int limitCountOfRecordsForPage = GetLimitCountOfRecordsForPage();
+            int firstIndexOfListClientsForPageOnLimit = limitCountOfRecordsForPage * selectedPage;
+
+            if (listBoxPages.Items.Count - 1 == listBoxPages.SelectedIndex && currentCountOfClients % limitCountOfRecordsForPage != 0)
+            {
+                limitCountOfRecordsForPage = currentCountOfClients % limitCountOfRecordsForPage;
+            }
 
             var listClientsForPageOnLimit = listClientsForPage.
-                GetRange(limitCountOfRecordsForPage * selectedPage,
+                GetRange(firstIndexOfListClientsForPageOnLimit,
                 limitCountOfRecordsForPage);
             listViewClients.ItemsSource = listClientsForPageOnLimit;
             textBlockCountOfPages.Text = currentCountOfClients.ToString() + " из " + SaidyakovLanguageEntities.GetContext().Client.Count().ToString();
@@ -79,7 +79,6 @@ namespace SaidyakovLanguage
         private void UpdateListBoxPages()
         {
             int currentCountOfClients = listClientsForPage.Count();
-
             int limitCountOfRecordsForPage = GetLimitCountOfRecordsForPage();
 
             int countOfPages = currentCountOfClients / limitCountOfRecordsForPage;
@@ -87,6 +86,7 @@ namespace SaidyakovLanguage
             {
                 ++countOfPages;
             }
+
             listBoxPages.Items.Clear();
             for (int i = 1; i <= countOfPages; ++i) { 
                 listBoxPages.Items.Add(i);
@@ -111,9 +111,9 @@ namespace SaidyakovLanguage
                 case 3: listClientsForPage = listClientsForPage.OrderByDescending(cl => cl.VisitCount).ToList(); break;
             }
 
-            listClientsForPage = listClientsForPage.Where(cl => cl.FIO.ToLower().Contains(textBoxSearch.Text.ToLower()) ||
-                                            cl.Email.ToLower().Contains(textBoxSearch.Text.ToLower()) ||
-                                            cl.Phone.Replace("-", "").Replace("(", "").Replace(")", "").Contains(textBoxSearch.Text.ToLower())).ToList();
+            listClientsForPage = listClientsForPage.Where(cl => cl.FIO.ToLower().Contains(textBoxSearch.Text.ToLower())
+                                                       || cl.Email.ToLower().Contains(textBoxSearch.Text.ToLower())
+                                                       || cl.Phone.Replace("-", "").Replace("(", "").Replace(")", "").Contains(textBoxSearch.Text.ToLower())).ToList();
             
             listViewClients.ItemsSource = listClientsForPage;
 
