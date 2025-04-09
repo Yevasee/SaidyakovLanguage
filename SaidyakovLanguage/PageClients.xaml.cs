@@ -113,7 +113,8 @@ namespace SaidyakovLanguage
 
             listClientsForPage = listClientsForPage.Where(cl => cl.FIO.ToLower().Contains(textBoxSearch.Text.ToLower())
                                                        || cl.Email.ToLower().Contains(textBoxSearch.Text.ToLower())
-                                                       || cl.Phone.Replace("-", "").Replace("(", "").Replace(")", "").Contains(textBoxSearch.Text.ToLower())).ToList();
+                                                       || cl.Phone.Replace("-", "").Replace("(", "").Replace(")", "").
+                                                       Contains(textBoxSearch.Text.ToLower())).ToList();
             
             listViewClients.ItemsSource = listClientsForPage;
 
@@ -156,7 +157,7 @@ namespace SaidyakovLanguage
                 {
                     SaidyakovLanguageEntities.GetContext().Client.Remove(CurrentClient);
                     SaidyakovLanguageEntities.GetContext().SaveChanges();
-                    UpdateListView();
+                    UpdateClients();
                 }
             }
         }
@@ -174,6 +175,27 @@ namespace SaidyakovLanguage
         private void GenderCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateClients();
+        }
+
+        private void BtnAddClient_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new PageAddEditClient(null));
+        }
+
+        private void BtnEditClient_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new PageAddEditClient((sender as Button).DataContext as Client));
+        }
+
+        private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                SaidyakovLanguageEntities.GetContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
+                listViewClients.ItemsSource = SaidyakovLanguageEntities.GetContext().Client.ToList();
+
+                UpdateClients();
+            }
         }
     }
 }

@@ -85,6 +85,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelSaidyakovLanguage.tt</DependentUpon>
     </Compile>
+    <Compile Include="PageAddEditClient.xaml.cs">
+      <DependentUpon>PageAddEditClient.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PageClients.xaml.cs">
       <DependentUpon>PageClients.xaml</DependentUpon>
     </Compile>
@@ -121,6 +124,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PageAddEditClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PageClients.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

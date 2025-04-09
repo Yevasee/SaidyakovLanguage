@@ -25,6 +25,8 @@ namespace SaidyakovLanguage
             InitializeComponent();
 
             MainFrame.Navigate(new PageClients());
+
+            Manager.MainFrame = MainFrame;
         }
 
         private void MainFrame_ContentRendered(object sender, EventArgs e)
